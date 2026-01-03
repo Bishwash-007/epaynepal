@@ -1,0 +1,14 @@
+.git
+
+node_modules/
+phase1.md
+phase2.md
+phase3.md
+env/
+.DS_Store
+
+.env
+logs/*.log
+coverage/
+.idea/.vscode/
+*.iml
