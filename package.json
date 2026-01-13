@@ -4,14 +4,41 @@
   "description": "Unified Nepali payment gateway SDK",
   "type": "module",
   "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "scripts": {
     "dev": "node src/index.js",
     "lint": "node --check src/index.js",
     "prepare": "npm run lint",
     "test": "echo \"No automated tests yet\""
   },
-  "author": "",
+  "author": "Bishwash Chaudhari",
   "license": "MIT",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "payment",
+    "sdk",
+    "nepal",
+    "esewa",
+    "khalti",
+    "connectips"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bishwash-007/epaynepal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bishwash-007/epaynepal/issues"
+  },
+  "homepage": "https://github.com/Bishwash-007/epaynepal#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "axios": "^1.7.7",
     "zod": "^3.23.8"

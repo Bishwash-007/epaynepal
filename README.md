@@ -1,8 +1,6 @@
 # NepalPay SDK (JavaScript)
 
-> Unified event-driven SDK that aggregates Nepali payment gateways (eSewa, Khalti, ConnectIPS*, manual bank transfer) behind a consistent API surface.
-
-\*ConnectIPS shipping soon.
+> Unified event-driven SDK that aggregates Nepali payment gateways (eSewa, Khalti) behind a consistent API surface.
 
 ## Why NepalPay?
 
@@ -52,7 +50,6 @@ const payment = new NepalPay({
     websiteUrl: 'https://merchant.app',
     env: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox'
   },
-  // connectips, bank configs go here
 });
 
 const initiation = await payment.initiate('esewa', {
@@ -135,14 +132,6 @@ payment.on('payment.success', (event) => {
 | `websiteUrl` | ✅ | Public-facing domain (required by API) |
 | `env` | ✅ | `sandbox` or `production`; selects API base |
 
-### ConnectIPS (stub)
-
-Adapter placeholder currently throws `ProviderNotSupportedError`. Follow the eSewa or Khalti adapter for guidance when implementing.
-
-### Manual Bank Transfer
-
-Returns structured instructions (set in config) and marks status `PENDING`. Useful for cash/cheque fallbacks while keeping the SDK surface uniform.
-
 ## Usage Patterns
 
 ### Initiate Khalti Payment
@@ -189,7 +178,6 @@ app.get('/payments/khalti/callback', async (req, res) => {
 | Error | When it occurs |
 | ----- | -------------- |
 | `InvalidConfigError` | Missing/invalid provider config or malformed initiate payload |
-| `ProviderNotSupportedError` | Provider absent or feature not implemented (e.g., ConnectIPS stub) |
 | `VerificationFailedError` | Signature mismatch, missing `pidx`, failed lookup result |
 | `HttpRequestError` | Axios error wrapped with safe `status` + `data` metadata |
 
@@ -212,8 +200,6 @@ try {
 | -------- | ------ | ----- |
 | eSewa | ✅ | Initiate, callback signature validation, status check |
 | Khalti | ✅ | Web checkout initiate, lookup verification, callback bridge |
-| ConnectIPS | 🚧 | Stubbed; contributions welcome |
-| Manual Bank Transfer | ✅ | Placeholder for offline settlement |
 
 ## Contributing
 
