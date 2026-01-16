@@ -6,6 +6,10 @@
 export const Providers = Object.freeze({
   ESEWA: "esewa",
   KHALTI: "khalti",
+  CONNECT_IPS: "connectips",
+  IME_PAY: "imepay",
+  PRABHU_PAY: "prabhupay",
+  GLOBAL_IME: "globalime",
 });
 
 export const PaymentStatus = Object.freeze({
