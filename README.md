@@ -14,6 +14,12 @@
 src/
  ├─ core/            # NepalPay entry, provider factory, shared types, events, errors
  ├─ providers/       # Adapter + mapper + config per gateway
+ │  ├─ esewa/       # eSewa payment gateway
+ │  ├─ khalti/      # Khalti payment gateway
+ │  ├─ connectips/  # ConnectIPS banking aggregator
+ │  ├─ imepay/      # IME Pay payment gateway
+ │  ├─ prabhupay/   # Prabhu Pay payment gateway
+ │  └─ globalime/   # Global IME payment gateway
  ├─ utils/           # crypto, http, logger helpers
  └─ index.js         # Package entry (ESM)
 ```
@@ -132,6 +138,55 @@ payment.on('payment.success', (event) => {
 | `websiteUrl` | ✅ | Public-facing domain (required by API) |
 | `env` | ✅ | `sandbox` or `production`; selects API base |
 
+### ConnectIPS
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| `merchantId` | ✅ | Merchant account identifier |
+| `appId` | ✅ | Application identifier from ConnectIPS |
+| `appSecret` | ✅ | Application secret for authentication |
+| `username` | ✅ | API username |
+| `successUrl` | ✅ | Redirect endpoint after successful payment |
+| `failureUrl` | ✅ | Redirect endpoint after failed payment |
+| `env` | ✅ | `sandbox` or `production`; selects API base |
+
+### IME Pay
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| `merchantCode` | ✅ | Merchant code from IME Pay |
+| `merchantName` | ✅ | Registered merchant name |
+| `username` | ✅ | API username |
+| `password` | ✅ | API password |
+| `module` | ✅ | Module identifier |
+| `successUrl` | ✅ | Redirect endpoint after successful payment |
+| `failureUrl` | ✅ | Redirect endpoint after failed payment |
+| `env` | ✅ | `sandbox` or `production`; selects API base |
+
+### Prabhu Pay
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| `merchantId` | ✅ | Merchant account identifier |
+| `apiKey` | ✅ | API key for authentication |
+| `secretKey` | ✅ | Secret key for HMAC signatures |
+| `successUrl` | ✅ | Redirect endpoint after successful payment |
+| `failureUrl` | ✅ | Redirect endpoint after failed payment |
+| `env` | ✅ | `sandbox` or `production`; selects API base |
+
+### Global IME
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| `merchantCode` | ✅ | Merchant code from Global IME |
+| `merchantName` | ✅ | Registered merchant name |
+| `username` | ✅ | API username |
+| `password` | ✅ | API password |
+| `apiKey` | ✅ | API key for authentication |
+| `successUrl` | ✅ | Redirect endpoint after successful payment |
+| `failureUrl` | ✅ | Redirect endpoint after failed payment |
+| `env` | ✅ | `sandbox` or `production`; selects API base |
+
 ## Usage Patterns
 
 ### Initiate Khalti Payment
@@ -153,11 +208,41 @@ await payment.initiate('khalti', {
 });
 ```
 
+### Initiate ConnectIPS Payment
+
+```js
+await payment.initiate('connectips', {
+  amount: 2500,
+  transactionId: 'TXN-12345',
+  remarks: 'Online purchase',
+  customerName: 'Ram Sharma',
+  customerEmail: 'ram@example.com',
+  customerMobile: '9800000001'
+});
+```
+
+### Initiate IME Pay Payment
+
+```js
+await payment.initiate('imepay', {
+  amount: 1800,
+  transactionId: 'IME-ORD-001',
+  remarks: 'Service payment',
+  customerName: 'Sita Thapa',
+  customerEmail: 'sita@example.com',
+  customerMobile: '9800000002'
+});
+```
+
 ### Verify Payment
 
 ```js
 await payment.verify('khalti', { pidx: 'bZQLD9wRVWo4CdESSfuSsB' });
 await payment.verify('esewa', { transactionUuid: 'order-2401', totalAmount: 1000 });
+await payment.verify('connectips', { transactionId: 'TXN-12345' });
+await payment.verify('imepay', { transactionId: 'IME-ORD-001' });
+await payment.verify('prabhupay', { transactionId: 'PRABHU-001' });
+await payment.verify('globalime', { transactionId: 'GIME-001' });
 ```
 
 ### Manual Callback Processing
@@ -200,6 +285,10 @@ try {
 | -------- | ------ | ----- |
 | eSewa | ✅ | Initiate, callback signature validation, status check |
 | Khalti | ✅ | Web checkout initiate, lookup verification, callback bridge |
+| ConnectIPS | ✅ | Banking aggregator with multiple bank integrations |
+| IME Pay | ✅ | IME Pay payment gateway with full API support |
+| Prabhu Pay | ✅ | Prabhu Capital payment gateway |
+| Global IME | ✅ | Global IME payment gateway |
 
 ## Contributing
 
